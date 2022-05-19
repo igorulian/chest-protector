@@ -1,0 +1,7 @@
+protectioncost:
+  item: DIAMOND
+  ammount: 1
+
+messages:
+  typeLookingAtChest: ""
+  chestHasNoProtection: ""

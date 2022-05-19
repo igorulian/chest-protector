@@ -40,7 +40,9 @@ public class ChestProtection implements Listener {
                     return;
                 }
 
-                if(player.getInventory().getItemInMainHand().getType().equals(Material.DIAMOND)){
+                Material itemInHand = player.getInventory().getItemInMainHand().getType();
+
+                if(itemInHand.equals(Material.DIAMOND) && player.isSneaking()){
 
                     RemoveDiamondFromPlayer(player, 1);
 

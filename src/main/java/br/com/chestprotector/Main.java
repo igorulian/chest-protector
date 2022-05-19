@@ -10,12 +10,12 @@ public final class Main extends JavaPlugin {
         saveDefaultConfig();
         new Database().CreateFile();
         registerEvents();
-        Bukkit.getConsoleSender().sendMessage("Pl habilitado com sucesso!");
+        Bukkit.getConsoleSender().sendMessage("§eChestProtector Enabled");
     }
 
     @Override
     public void onDisable() {
-        // Plugin shutdown logic
+        Bukkit.getConsoleSender().sendMessage("§eChestProtector Disabled");
     }
 
     private void registerEvents(){

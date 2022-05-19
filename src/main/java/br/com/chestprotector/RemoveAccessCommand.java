@@ -27,12 +27,12 @@ public class RemoveAccessCommand implements CommandExecutor {
                 double y = block.getY();
                 double z = block.getZ();
 
-                if(!new Database().IsChestProtected(x,y,z)){
+                if(!Database.IsChestProtected(x,y,z)){
                     player.sendMessage("§cEste baú ainda não possui proteção");
                     return false;
                 }
 
-                if(!new Database().AmITheChestOwner(player, x,y,z)){
+                if(!Database.AmITheChestOwner(player, x,y,z)){
                     player.sendMessage("§cVocê precisa ser o dono do baú para conceder permissões");
                     return false;
                 }
@@ -44,12 +44,12 @@ public class RemoveAccessCommand implements CommandExecutor {
                     return false;
                 }
 
-                if(new Database().CanOpenChest(player,x,y,z)){
+                if(Database.CanOpenChest(player,x,y,z)){
                     player.sendMessage("§eJogador ja possui permissão do baú");
                     return false;
                 }
 
-                new Database().GrantAccessToChest(player,x,y,z);
+                Database.GrantAccessToChest(player,x,y,z);
 
             }else{
                 player.sendMessage("/remover {player}");
