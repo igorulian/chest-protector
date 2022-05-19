@@ -81,6 +81,8 @@ public class ChestProtection implements Listener {
                 double y = block.getY();
                 double z = block.getZ();
 
+                if(!Database.IsChestProtected(x,y,z)) return;
+
                 if(!Database.CanOpenChest(player, x, y, z)){
                     event.setCancelled(true);
                     player.sendMessage("§cVocê não possui acesso à esse baú");
