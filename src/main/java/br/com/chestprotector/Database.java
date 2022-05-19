@@ -126,24 +126,20 @@ public class Database {
         File file = new File(data, File.separator + "chests.yml");
         FileConfiguration chestData = YamlConfiguration.loadConfiguration(file);
 
-        if(IsChestProtected(x,y,z)){
-            player.sendMessage("§eEsse baú já está protegido");
-        }else{
-            try {
-                String key = "" + x + "" + y + "" + z;
-                key = key.replace(".", "-");
-                chestData.set(key + ".x", x);
-                chestData.set(key + ".y", y);
-                chestData.set(key + ".z", z);
-                chestData.set(key + ".owner", player.getPlayer().getUniqueId().toString());
-                ArrayList<String> access = new ArrayList<String>();
-                chestData.set(key + ".access", access);
-                chestData.save(file);
-                player.sendMessage("§aBaú trancado com sucesso!");
-                player.getWorld().spawnParticle(Particle.FIREWORKS_SPARK, new Location(player.getWorld(),x,y,z), 10);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+        try {
+            String key = "" + x + "" + y + "" + z;
+            key = key.replace(".", "-");
+            chestData.set(key + ".x", x);
+            chestData.set(key + ".y", y);
+            chestData.set(key + ".z", z);
+            chestData.set(key + ".owner", player.getPlayer().getUniqueId().toString());
+            ArrayList<String> access = new ArrayList<String>();
+            chestData.set(key + ".access", access);
+            chestData.save(file);
+            player.sendMessage("§aBaú trancado com sucesso!");
+            player.getWorld().spawnParticle(Particle.FIREWORKS_SPARK, new Location(player.getWorld(),x,y,z), 10);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 

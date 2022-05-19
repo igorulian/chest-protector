@@ -1,13 +1,17 @@
 package br.com.chestprotector;
 
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
+
+import javax.xml.crypto.Data;
 
 public class ChestProtection implements Listener {
 
@@ -25,7 +29,9 @@ public class ChestProtection implements Listener {
     @EventHandler
     public void onClickChest(PlayerInteractEvent event){
         Player player = event.getPlayer();
-        if(event.getAction() == Action.RIGHT_CLICK_BLOCK){
+        boolean isMainHand = (event.getHand() == EquipmentSlot.HAND);
+
+        if((event.getAction() == Action.RIGHT_CLICK_BLOCK)){
             Block block = event.getClickedBlock();
             Material material = block.getType();
 
@@ -34,19 +40,29 @@ public class ChestProtection implements Listener {
                 double y = block.getY();
                 double z = block.getZ();
 
-                if(!new Database().CanOpenChest(player, x, y, z)){
+                if(!Database.CanOpenChest(player, x, y, z)){
                     event.setCancelled(true);
                     player.sendMessage("§cVocê não possui acesso à esse baú");
+                    player.getWorld().playSound(player.getLocation(), Sound.BLOCK_TRIPWIRE_CLICK_ON, 10, 10);
                     return;
                 }
 
+                if(!(player.isSneaking() && isMainHand)) return;
+
                 Material itemInHand = player.getInventory().getItemInMainHand().getType();
 
-                if(itemInHand.equals(Material.DIAMOND) && player.isSneaking()){
+                if(itemInHand.equals(Material.DIAMOND)){
+                    event.setCancelled(true);
+
+                    if(Database.IsChestProtected(x,y,z)) {
+                        player.sendMessage("§eEsse baú já está protegido");
+                        return;
+                    }
 
                     RemoveDiamondFromPlayer(player, 1);
+                    Database.ProtectChest(player,x, y, z);
+                    player.getWorld().playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 10, 10);
 
-                    new Database().ProtectChest(player,x, y, z);
                 }
             }
         }

@@ -33,7 +33,7 @@ public class RemoveAccessCommand implements CommandExecutor {
                 }
 
                 if(!Database.AmITheChestOwner(player, x,y,z)){
-                    player.sendMessage("§cVocê precisa ser o dono do baú para conceder permissões");
+                    player.sendMessage("§cVocê precisa ser o dono do baú para remover permissões");
                     return false;
                 }
 
