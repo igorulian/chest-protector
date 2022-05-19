@@ -7,6 +7,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
@@ -66,5 +67,27 @@ public class ChestProtection implements Listener {
                 }
             }
         }
+    }
+
+    @EventHandler
+    public void onBreakChest(BlockBreakEvent event){
+        Player player = event.getPlayer();
+
+            Block block = event.getBlock();
+            Material material = block.getType();
+
+            if(material.equals(Material.CHEST)){
+                double x = block.getX();
+                double y = block.getY();
+                double z = block.getZ();
+
+                if(!Database.CanOpenChest(player, x, y, z)){
+                    event.setCancelled(true);
+                    player.sendMessage("§cVocê não possui acesso à esse baú");
+                    player.getWorld().playSound(player.getLocation(), Sound.BLOCK_TRIPWIRE_CLICK_ON, 10, 10);
+                    return;
+                }
+
+            }
     }
 }
