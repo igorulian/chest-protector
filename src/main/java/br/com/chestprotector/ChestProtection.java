@@ -88,6 +88,9 @@ public class ChestProtection implements Listener {
                     return;
                 }
 
+                Database.RemoveChest(x,y,z);
+                player.getWorld().playSound(block.getLocation(), Sound.BLOCK_ANVIL_DESTROY, 10, 10);
+
             }
     }
 }

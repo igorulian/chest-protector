@@ -232,5 +232,26 @@ public class Database {
         throw new IllegalArgumentException();
     }
 
+    public static void RemoveChest(double x, double y, double z){
+        File data = new File(plugin.getDataFolder(), File.separator + "/");
+        File file = new File(data, File.separator + "chests.yml");
+        FileConfiguration chestData = YamlConfiguration.loadConfiguration(file);
+
+        Object[] fields = chestData.getConfigurationSection("").getKeys(false).toArray();
+
+        for (Object key : fields){
+            double dx = chestData.getDouble("" + key + ".x");
+            double dy = chestData.getDouble("" + key + ".y");
+            double dz = chestData.getDouble("" + key + ".z");
+
+            if((dx == x) && (dy == y) && (dz == z)) {
+                try{
+                    chestData.set("" + key, null);
+                    chestData.save(file);
+                }catch (IOException e){}
+            }
+        }
+    }
+
 
 }
