@@ -23,6 +23,7 @@ public final class Main extends JavaPlugin {
 
         getCommand("liberar").setExecutor(new GrantAccessCommnad());
         getCommand("remover").setExecutor(new RemoveAccessCommand());
+        getCommand("listar").setExecutor(new ListOfAccessCommand());
     }
 
 }

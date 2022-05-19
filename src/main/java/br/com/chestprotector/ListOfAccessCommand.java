@@ -9,13 +9,12 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-public class RemoveAccessCommand implements CommandExecutor {
-
+public class ListOfAccessCommand implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if(sender instanceof Player){
             Player player = (Player) sender;
-            if(args.length == 1) {
+            if(args.length == 0) {
                 Block block = player.getTargetBlock(6);
 
                 if(!block.getType().equals(Material.CHEST)){
@@ -32,27 +31,10 @@ public class RemoveAccessCommand implements CommandExecutor {
                     return false;
                 }
 
-                if(!Database.AmITheChestOwner(player, x,y,z)){
-                    player.sendMessage("§cVocê precisa ser o dono do baú para remover permissões");
-                    return false;
-                }
-
-                Player liberarPlayer = Bukkit.getPlayer(args[0]);
-
-                if(liberarPlayer == null){
-                    player.sendMessage("§cJogador inválido!");
-                    return false;
-                }
-
-                if(Database.CanOpenChest(player,x,y,z)){
-                    player.sendMessage("§eJogador ja possui permissão do baú");
-                    return false;
-                }
-
-                Database.RemoveAccessToChest(player,x,y,z);
+                Database.ListAccessPlayers(player,x,y,z);
 
             }else{
-                player.sendMessage("/remover {player}");
+                player.sendMessage("/listar");
             }
 
         }

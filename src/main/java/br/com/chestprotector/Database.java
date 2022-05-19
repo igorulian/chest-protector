@@ -2,6 +2,7 @@ package br.com.chestprotector;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.Particle;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -193,54 +194,43 @@ public class Database {
         }
     }
 
-//    public static int getPlayerDB(Player player, String data){
-//        File playerFile = getPlayerFile(player);
-//        FileConfiguration playerData = getPlayerData(player, playerFile);
-//        return playerData.getInt(data);
-//    }
-//
-//    public static void setPlayerDB(Player player, String data, int value){
-//        try{
-//            File playerFile = getPlayerFile(player);
-//            FileConfiguration playerData = getPlayerData(player, playerFile);
-//            playerData.set(data, value);
-//            playerData.save(playerFile);
-//        }catch (IOException exception){
-//            player.sendMessage("§4 Ocorreu um erro ao salvar suas informações, favor contate um administrador");
-//            player.sendMessage("§4 " + data + " " + value);
-//        }
-//    }
-//
-//    public static void addPlayerDB(Player player, String data, int value){
-//        try{
-//            File playerFile = getPlayerFile(player);
-//            FileConfiguration playerData = getPlayerData(player, playerFile);
-//            playerData.set(data, value + playerData.getInt(data));
-//            playerData.save(playerFile);
-//        }catch (IOException exception){
-//            player.sendMessage("§4 Ocorreu um erro ao salvar suas informações, favor contate um administrador");
-//            player.sendMessage("§4 add " + data + " " + value);
-//        }
-//    }
-//
-//    public static boolean addSkillPoint(Player player, String data, int value){
-//        try{
-//            File playerFile = getPlayerFile(player);
-//            FileConfiguration playerData = getPlayerData(player, playerFile);
-//            int points = playerData.getInt("stats.points");
-//
-//            if(points >= value) {
-//                playerData.set(data, value + playerData.getInt(data));
-//                playerData.set("stats.points", playerData.getInt("stats.points") - 1);
-//                playerData.save(playerFile);
-//                return true;
-//            }else{
-//                return false;
-//            }
-//        }catch (IOException exception){
-//            player.sendMessage("§4 Ocorreu um erro ao salvar suas informações, favor contate um administrador");
-//            player.sendMessage("§4 add " + data + " " + value);
-//            return false;
-//        }
-//    }
+    public static void ListAccessPlayers(Player player, double x, double y, double z){
+        File data = new File(plugin.getDataFolder(), File.separator + "/");
+        File file = new File(data, File.separator + "chests.yml");
+        FileConfiguration chestData = YamlConfiguration.loadConfiguration(file);
+
+        Object[] fields = chestData.getConfigurationSection("").getKeys(false).toArray();
+
+        for (Object key : fields){
+            double dx = chestData.getDouble("" + key + ".x");
+            double dy = chestData.getDouble("" + key + ".y");
+            double dz = chestData.getDouble("" + key + ".z");
+            String owner = chestData.getString("" + key + ".owner");
+
+            if((dx == x) && (dy == y) && (dz == z)) {
+                player.sendMessage("§eJogadores com permissão neste baú: \n");
+                player.sendMessage(" §6- " + getPlayerByUuid(owner).getName() + " (dono)");
+                ArrayList<String> access = (ArrayList<String>) chestData.getList("" + key + ".access");
+                for (String playerID : access) {
+                    String playerName = getPlayerByUuid(playerID).getName();
+                    player.sendMessage(" §e- " + playerName);
+                }
+            }
+        }
+    }
+    public static Player getPlayerByUuid(String uuid) {
+        for(Player p : Bukkit.getServer().getOnlinePlayers()){
+            if(p.getUniqueId().toString().equals(uuid)) {
+                return p;
+            }
+        }
+        for(OfflinePlayer p : Bukkit.getServer().getOfflinePlayers()){
+            if(p.getUniqueId().toString().equals(uuid)) {
+                return (Player) p;
+            }
+        }
+        throw new IllegalArgumentException();
+    }
+
+
 }

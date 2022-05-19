@@ -8,3 +8,5 @@ commands:
     description: Liberar acesso a um bau
   remover:
     description: Remove acesso a um bau
+  listar:
+    description: Remove acesso a um bau

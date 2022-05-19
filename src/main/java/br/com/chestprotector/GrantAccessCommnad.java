@@ -45,9 +45,10 @@ public class GrantAccessCommnad implements CommandExecutor {
                 }
 
                 if(Database.CanOpenChest(player,x,y,z)){
-                    player.sendMessage("§eJogador ja possui permissão do baú");
+                    player.sendMessage("§eVocê não possui acesso à esse baú");
                     return false;
                 }
+
 
                 Database.GrantAccessToChest(player,x,y,z);
 
