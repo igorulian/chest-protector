@@ -1,0 +1,10 @@
+name: ChestProtector
+version: '${project.version}'
+main: br.com.chestprotector.Main
+api-version: 1.18
+authors: [ Iguera ]
+commands:
+  liberar:
+    description: Liberar acesso a um bau
+  remover:
+    description: Remove acesso a um bau
