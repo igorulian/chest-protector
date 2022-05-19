@@ -1,5 +1,6 @@
-package br.com.chestprotector;
+package br.com.chestprotector.commands;
 
+import br.com.chestprotector.Database;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -9,7 +10,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-public class RemoveAccessCommand implements CommandExecutor {
+public class GrantAccess implements CommandExecutor {
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
@@ -33,7 +34,7 @@ public class RemoveAccessCommand implements CommandExecutor {
                 }
 
                 if(!Database.AmITheChestOwner(player, x,y,z)){
-                    player.sendMessage("§cVocê precisa ser o dono do baú para remover permissões");
+                    player.sendMessage("§cVocê precisa ser o dono do baú para conceder permissões");
                     return false;
                 }
 
@@ -45,14 +46,15 @@ public class RemoveAccessCommand implements CommandExecutor {
                 }
 
                 if(Database.CanOpenChest(player,x,y,z)){
-                    player.sendMessage("§eJogador ja possui permissão do baú");
+                    player.sendMessage("§eVocê não possui acesso à esse baú");
                     return false;
                 }
 
-                Database.RemoveAccessToChest(player,x,y,z);
+
+                Database.GrantAccessToChest(player,x,y,z);
 
             }else{
-                player.sendMessage("/remover {player}");
+                player.sendMessage("/liberar {player}");
             }
 
         }

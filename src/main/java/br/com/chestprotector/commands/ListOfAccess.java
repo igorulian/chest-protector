@@ -1,6 +1,6 @@
-package br.com.chestprotector;
+package br.com.chestprotector.commands;
 
-import org.bukkit.Bukkit;
+import br.com.chestprotector.Database;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.command.Command;
@@ -9,13 +9,12 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-public class GrantAccessCommnad implements CommandExecutor {
-
+public class ListOfAccess implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if(sender instanceof Player){
             Player player = (Player) sender;
-            if(args.length == 1) {
+            if(args.length == 0) {
                 Block block = player.getTargetBlock(6);
 
                 if(!block.getType().equals(Material.CHEST)){
@@ -32,28 +31,10 @@ public class GrantAccessCommnad implements CommandExecutor {
                     return false;
                 }
 
-                if(!Database.AmITheChestOwner(player, x,y,z)){
-                    player.sendMessage("§cVocê precisa ser o dono do baú para conceder permissões");
-                    return false;
-                }
-
-                Player liberarPlayer = Bukkit.getPlayer(args[0]);
-
-                if(liberarPlayer == null){
-                    player.sendMessage("§cJogador inválido!");
-                    return false;
-                }
-
-                if(Database.CanOpenChest(player,x,y,z)){
-                    player.sendMessage("§eVocê não possui acesso à esse baú");
-                    return false;
-                }
-
-
-                Database.GrantAccessToChest(player,x,y,z);
+                Database.ListAccessPlayers(player,x,y,z);
 
             }else{
-                player.sendMessage("/liberar {player}");
+                player.sendMessage("/listar");
             }
 
         }
